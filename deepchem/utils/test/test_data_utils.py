@@ -2,10 +2,36 @@ import os
 import unittest
 import tempfile
 import pandas as pd
+import pytest
 import deepchem as dc
 from rdkit import Chem
 from deepchem.utils.data_utils import load_sdf_files
+from deepchem.utils.data_utils import materials_input_processing
 from deepchem.molnet.load_function.qm9_datasets import QM9_URL
+
+
+def test_materials_input_processing_string():
+    assert materials_input_processing("frames.extxyz") == ["frames.extxyz"]
+
+
+def test_materials_input_processing_list():
+    inputs = ["part1.extxyz", "part2.extxyz"]
+    assert materials_input_processing(inputs) == inputs
+
+
+def test_materials_input_processing_tuple():
+    assert materials_input_processing(
+        ("part1.extxyz", "part2.extxyz")) == ["part1.extxyz", "part2.extxyz"]
+
+
+def test_materials_input_processing_invalid_non_iterable():
+    with pytest.raises(ValueError, match="MaterialsLoader"):
+        materials_input_processing(5)
+
+
+def test_materials_input_processing_rejects_non_string_member():
+    with pytest.raises(ValueError, match="MaterialsLoader"):
+        materials_input_processing(path for path in ["frames.extxyz", 5])
 
 
 class TestFileLoading(unittest.TestCase):

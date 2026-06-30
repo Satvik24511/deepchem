@@ -20,6 +20,38 @@ import deepchem as dc
 logger = logging.getLogger(__name__)
 
 
+def materials_input_processing(inputs: Any) -> List[str]:
+    """Normalize MaterialsLoader inputs to a list of path strings.
+
+    Parameters
+    ----------
+    inputs: Any
+        One path string or an iterable of path strings.
+
+    Returns
+    -------
+    List[str]
+        The normalized input paths.
+
+    Raises
+    ------
+    ValueError
+        If ``inputs`` is not a path string or iterable of path strings.
+    """
+    if isinstance(inputs, str):
+        return [inputs]
+    try:
+        input_paths = list(inputs)
+    except TypeError:
+        raise ValueError(
+            "inputs must be a path string or an iterable of path strings for "
+            "MaterialsLoader.")
+    if not all(isinstance(path, str) for path in input_paths):
+        raise ValueError(
+            "inputs must contain only path strings for MaterialsLoader.")
+    return input_paths
+
+
 def pad_array(x: np.ndarray,
               shape: Union[Tuple, int],
               fill: float = 0.0,
