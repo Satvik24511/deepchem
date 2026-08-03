@@ -311,6 +311,13 @@ Inorganic Crystal Featurizers
 
 These featurizers work with datasets of inorganic crystals.
 
+AtomisticRadiusGraphFeaturizer
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+.. autoclass:: deepchem.feat.AtomisticRadiusGraphFeaturizer
+  :members:
+  :inherited-members:
+
 MaterialCompositionFeaturizer
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
