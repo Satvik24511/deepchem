@@ -2129,9 +2129,12 @@ class MaterialsLoader(DataLoader):
                 assert len(X) == len(ids)
                 yield X, y, w, ids
 
-        return DiskDataset.create_dataset(shard_generator(),
-                                          data_dir=data_dir,
-                                          tasks=self.tasks)
+        # DiskDataset supports None labels and weights for unlabeled datasets,
+        # although its Batch type alias does not include them.
+        return DiskDataset.create_dataset(
+            shard_generator(),  # type: ignore[arg-type]
+            data_dir=data_dir,
+            tasks=self.tasks)
 
 
 class DFTYamlLoader(DataLoader):
